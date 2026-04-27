@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0e1a" />
+<title>Sniper Trading | منصة الصيد</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='52'%3E🎯%3C/text%3E%3C/svg%3E" />
+<style>
+:root{
+  --bg:#050811; --bg2:#0a1020; --card:#111a2e; --card2:#162039;
+  --border:#243150; --border2:#2d3d63;
+  --text:#e6edf3; --muted:#8a99b8; --slate:#cbd5e1;
+  --green:#22c55e; --green2:#4ade80; --red:#ef4444; --red2:#f87171;
+  --amber:#fbbf24; --blue:#60a5fa; --sky:#7dd3fc; --purple:#a78bfa;
+  --shadow:0 12px 40px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:radial-gradient(ellipse at top,#1a2547 0%,#0b1220 45%,var(--bg) 100%);
+  background-attachment:fixed;
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','SF Arabic','Tajawal',Roboto,sans-serif;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"tnum" 1;
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit;color:inherit}
+.hidden{display:none!important}
+.row{display:flex;align-items:center;gap:8px}
+.gap{display:flex;gap:8px;flex-wrap:wrap}
+.spacer{flex:1}
+
+/* ---------- LOGIN ---------- */
+#login{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
+}
+.login-card{
+  background:rgba(17,26,46,.85);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:36px 28px;
+  max-width:420px;width:100%;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(18px);
+}
+.login-card h1{font-size:32px;font-weight:800;margin-bottom:6px;letter-spacing:-.5px}
+.login-card .sub{color:var(--muted);font-size:14px;margin-bottom:28px}
+.login-card label{display:block;font-size:13px;color:var(--slate);margin:14px 0 6px;font-weight:600}
+.login-card input{
+  width:100%;
+  background:#0b1220;border:1px solid var(--border);
+  padding:13px 14px;border-radius:10px;font-size:15px;
+  transition:border .2s, box-shadow .2s;
+}
+.login-card input:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(125,211,252,.15)}
+.btn-primary{
+  width:100%;background:linear-gradient(135deg,#3b82f6,#1d4ed8);
+  color:#fff;padding:14px;border-radius:10px;font-weight:700;font-size:15px;
+  margin-top:22px;letter-spacing:.3px;
+  transition:transform .15s, box-shadow .2s;
+}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(59,130,246,.4)}
+.btn-primary:active{transform:translateY(0)}
+.error-msg{
+  background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.4);
+  color:var(--red2);padding:10px 14px;border-radius:8px;font-size:13px;margin-top:14px;
+}
+
+/* ---------- APP SHELL ---------- */
+header{
+  position:sticky;top:0;z-index:20;
+  background:rgba(10,16,32,.92);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  padding:12px 16px;
+  display:flex;align-items:center;gap:12px;
+}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:17px}
+.brand-dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.market-chip{
+  padding:5px 12px;border-radius:999px;font-size:12px;font-weight:700;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.market-chip.open{background:rgba(34,197,94,.15);color:var(--green2);border:1px solid rgba(34,197,94,.4)}
+.market-chip.closed{background:rgba(148,163,184,.15);color:#94a3b8;border:1px solid rgba(148,163,184,.4)}
+.user-chip{
+  background:var(--card);border:1px solid var(--border);
+  padding:5px 10px;border-radius:8px;font-size:13px;color:var(--slate);
+  display:flex;align-items:center;gap:6px;
+}
+.icon-btn{
+  background:var(--card);border:1px solid var(--border);
+  padding:7px 9px;border-radius:8px;font-size:13px;color:var(--slate);
+  transition:background .15s;
+}
+.icon-btn:hover{background:var(--card2)}
+
+nav{
+  display:flex;gap:4px;padding:8px 12px;
+  background:rgba(10,16,32,.7);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:57px;z-index:19;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+nav::-webkit-scrollbar{display:none}
+.tab{
+  padding:8px 14px;border-radius:8px;font-size:14px;font-weight:600;
+  color:var(--muted);white-space:nowrap;
+  transition:background .15s, color .15s;
+}
+.tab.active{background:var(--card2);color:var(--text)}
+.tab:hover:not(.active){color:var(--slate);background:rgba(255,255,255,.03)}
+
+main{padding:18px 16px 40px;max-width:1200px;margin:0 auto}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px;
+  box-shadow:var(--shadow);
+}
+h2.section{font-size:16px;font-weight:700;margin:8px 0 12px;color:var(--slate)}
+
+/* ---------- MARKET PAGE ---------- */
+.indices-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:10px;margin-bottom:18px;
+}
+.index-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:14px;text-align:center;
+  transition:transform .15s, border-color .15s;
+}
+.index-card:hover{transform:translateY(-2px);border-color:var(--border2)}
+.index-card .sym{font-size:13px;color:var(--muted);margin-bottom:4px;font-weight:600}
+.index-card .px{font-size:22px;font-weight:800;letter-spacing:-.5px}
+.index-card .ch{font-size:13px;font-weight:700;margin-top:4px}
+.up{color:var(--green2)}
+.down{color:var(--red2)}
+.neutral{color:var(--muted)}
+
+.stocks-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));
+  gap:10px;
+}
+.stock-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:12px;cursor:pointer;
+  transition:transform .15s, border-color .15s, background .15s;
+}
+.stock-card:hover{transform:translateY(-2px);border-color:var(--sky);background:var(--card2)}
+.stock-card .sym{font-weight:800;font-size:15px}
+.stock-card .name{font-size:11px;color:var(--muted);margin-top:1px;height:14px;overflow:hidden}
+.stock-card .px{font-size:17px;font-weight:700;margin-top:8px}
+.stock-card .ch{font-size:12px;font-weight:700;margin-top:2px}
+.stock-card .meta{font-size:11px;color:var(--muted);margin-top:6px;display:flex;justify-content:space-between;border-top:1px solid var(--border);padding-top:6px}
+
+/* ---------- FAVORITES ---------- */
+.fav-bar{display:flex;gap:8px;margin-bottom:14px}
+.fav-bar input{
+  flex:1;background:#0b1220;border:1px solid var(--border);
+  padding:11px 12px;border-radius:10px;font-size:14px;
+}
+.fav-bar input:focus{outline:none;border-color:var(--sky)}
+.fav-bar button{
+  background:var(--green);color:#04140a;
+  padding:11px 16px;border-radius:10px;font-weight:700;font-size:14px;
+}
+.fav-detail{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:14px;margin-bottom:10px;
+}
+.fav-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.fav-head .left{display:flex;align-items:baseline;gap:10px}
+.fav-head .sym{font-size:20px;font-weight:800}
+.fav-head .name{font-size:12px;color:var(--muted)}
+.fav-head .px{font-size:22px;font-weight:800;letter-spacing:-.5px}
+.fav-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(95px,1fr));gap:8px;margin-top:10px}
+.stat{
+  background:#0b1220;border:1px solid var(--border);border-radius:8px;
+  padding:8px 10px;text-align:center;
+}
+.stat .lbl{font-size:10px;color:var(--muted);margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px}
+.stat .val{font-size:13px;font-weight:700}
+.btn-del{
+  background:rgba(239,68,68,.12);color:var(--red2);
+  border:1px solid rgba(239,68,68,.3);
+  padding:5px 10px;border-radius:7px;font-size:11px;font-weight:600;
+}
+.btn-del:hover{background:rgba(239,68,68,.22)}
+
+/* ---------- SIGNALS ---------- */
+.signals-bar{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;
+}
+.signals-bar .info{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}
+.scan-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--sky);
+  box-shadow:0 0 10px var(--sky);animation:pulse 1.6s ease-in-out infinite;
+}
+.refresh-btn{
+  background:var(--card);border:1px solid var(--border);
+  padding:7px 12px;border-radius:8px;font-size:13px;color:var(--slate);
+  display:flex;align-items:center;gap:6px;
+}
+.refresh-btn:hover{background:var(--card2);border-color:var(--sky);color:var(--text)}
+.bias-card{
+  background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);
+  border:1px solid var(--border);border-radius:14px;
+  padding:16px;text-align:center;margin-bottom:14px;
+}
+.bias-card .lbl{font-size:12px;color:var(--muted);margin-bottom:6px}
+.bias-card .dir{font-size:26px;font-weight:800}
+.bias-card .conf{font-size:13px;color:var(--slate);margin-top:4px}
+
+.signal-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:16px;margin-bottom:12px;
+  position:relative;overflow:hidden;
+  animation:fadeIn .35s ease-out;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.signal-card::before{
+  content:"";position:absolute;top:0;right:0;bottom:0;width:4px;
+}
+.signal-card.call::before{background:var(--green)}
+.signal-card.put::before{background:var(--red)}
+.sig-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.sig-title{font-size:19px;font-weight:800;display:flex;align-items:center;gap:8px}
+.sig-conf{
+  padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;
+}
+.sig-conf.high{background:rgba(34,197,94,.15);color:var(--green2);border:1px solid rgba(34,197,94,.4)}
+.sig-conf.med{background:rgba(251,191,36,.15);color:var(--amber);border:1px solid rgba(251,191,36,.4)}
+.ticket{
+  background:#050811;border:1px solid var(--border2);border-radius:10px;
+  padding:11px 14px;text-align:center;margin-bottom:12px;
+  font-family:'Menlo','Monaco',monospace;color:var(--amber);font-size:14px;font-weight:600;
+  letter-spacing:.4px;cursor:copy;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:background .15s;
+}
+.ticket:hover{background:#0b1220}
+.ticket .copy-hint{font-size:10px;color:var(--muted);font-family:inherit}
+.sig-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.sig-tags{font-size:12px;color:var(--sky);font-style:italic;padding-top:8px;border-top:1px solid var(--border);line-height:1.7}
+.empty{
+  text-align:center;padding:50px 20px;color:var(--muted);
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+}
+.empty .em{font-size:48px;margin-bottom:12px}
+.empty .t{font-size:16px;color:var(--slate);margin-bottom:6px}
+.empty .s{font-size:13px;line-height:1.7}
+
+/* ---------- ADMIN ---------- */
+.admin-bar{display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap}
+.admin-bar h3{font-size:15px;color:var(--slate)}
+.btn-add{
+  background:linear-gradient(135deg,#22c55e,#16a34a);color:#04140a;
+  padding:10px 16px;border-radius:10px;font-weight:700;font-size:13px;
+  margin-right:auto;
+}
+.user-row{
+  background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px;margin-bottom:8px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;
+}
+.user-creds{display:flex;flex-direction:column;gap:2px}
+.user-creds .u{font-weight:700;font-size:14px;font-family:'Menlo',monospace}
+.user-creds .p{font-size:12px;color:var(--muted);font-family:'Menlo',monospace}
+.user-creds .t{font-size:10px;color:var(--muted);margin-top:3px}
+
+/* ---------- TOAST ---------- */
+#toast{
+  position:fixed;bottom:24px;right:50%;transform:translateX(50%);
+  background:var(--card2);border:1px solid var(--border2);
+  padding:11px 18px;border-radius:10px;font-size:14px;font-weight:600;
+  box-shadow:var(--shadow);z-index:100;
+  opacity:0;transition:opacity .25s, transform .25s;
+  pointer-events:none;
+}
+#toast.show{opacity:1;transform:translateX(50%) translateY(-4px)}
+#toast.ok{border-color:var(--green)}
+#toast.err{border-color:var(--red)}
+
+/* loader */
+.spinner{
+  width:38px;height:38px;border-radius:50%;
+  border:3px solid var(--border);border-top-color:var(--sky);
+  animation:spin 1s linear infinite;margin:30px auto;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.skel{
+  background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.4s infinite;
+  border-radius:8px;
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.disclaimer{
+  font-size:11px;color:var(--muted);text-align:center;margin-top:24px;
+  padding:14px;border-top:1px solid var(--border);line-height:1.7;
+}
+@media (max-width:480px){
+  header{padding:10px 12px}
+  .brand{font-size:15px}
+  main{padding:14px 12px 30px}
+  .login-card{padding:28px 22px}
+  .login-card h1{font-size:26px}
+  .stocks-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="login">
+  <div class="login-card">
+    <div style="font-size:42px;text-align:center;margin-bottom:8px">🎯</div>
+    <h1 style="text-align:center">Sniper Trading</h1>
+    <p class="sub" style="text-align:center">منصة الصيد للعقود الذكية</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="lu">اسم المستخدم</label>
+      <input id="lu" type="text" required autocomplete="off" />
+      <label for="lp">كلمة المرور</label>
+      <input id="lp" type="password" required autocomplete="off" />
+      <button class="btn-primary" type="submit">دخول</button>
+      <div id="loginErr" class="error-msg hidden"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== APP ===================== -->
+<div id="app" class="hidden">
+  <header>
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span>Sniper</span>
+    </div>
+    <span id="marketChip" class="market-chip closed">⏳</span>
+    <div class="spacer"></div>
+    <span id="userChip" class="user-chip">👤 —</span>
+    <button id="logoutBtn" class="icon-btn" title="خروج">🚪</button>
+  </header>
+
+  <nav id="tabs">
+    <button class="tab active" data-tab="market">📊 حركة السوق</button>
+    <button class="tab" data-tab="favs">⭐ المفضلة</button>
+    <button class="tab" data-tab="signals">🎯 صيد العقود</button>
+    <button class="tab admin-only hidden" data-tab="admin">⚙️ المستخدمون</button>
+  </nav>
+
+  <main id="content"></main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =====================================================================
+   SNIPER TRADING — single-file static web app
+   ===================================================================== */
+
+/* ---------- CONFIG ---------- */
+const ADMIN = { username: "Saad1955", password: "Saad1955@@" };
+const TICKERS = ["AAPL","NVDA","AMD","TSLA","AMZN","MSFT","META","GOOGL","NFLX","SPY","QQQ"];
+const NAMES = {
+  AAPL:"Apple", NVDA:"NVIDIA", AMD:"AMD", TSLA:"Tesla", AMZN:"Amazon",
+  MSFT:"Microsoft", META:"Meta", GOOGL:"Alphabet", NFLX:"Netflix",
+  SPY:"S&P 500", QQQ:"Nasdaq 100", DIA:"Dow Jones", IWM:"Russell 2000"
+};
+const INDICES = ["SPY","QQQ","DIA","IWM"];
+const REFRESH_MS = 30 * 1000;
+const PROXIES = [
+  u => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
+  u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
+];
+
+/* ---------- STATE ---------- */
+const state = {
+  user: null,                     // {username, isAdmin}
+  tab: "market",
+  quotes: {},                     // symbol -> {price, change, changePct, vol, ...}
+  history: {},                    // symbol -> {closes:[], highs:[], lows:[], vols:[]}
+  favorites: [],
+  users: [],                      // [{u,p,createdAt}]
+  signals: [],
+  bias: null,
+  lastUpdate: 0,
+  marketOpen: false,
+  refreshTimer: null,
+  fetching: false,
+};
+
+/* ---------- STORAGE ---------- */
+const LS = {
+  get: (k, d) => { try { return JSON.parse(localStorage.getItem("snp_"+k)) ?? d } catch { return d } },
+  set: (k, v) => localStorage.setItem("snp_"+k, JSON.stringify(v)),
+  del: (k) => localStorage.removeItem("snp_"+k),
+};
+
+/* ---------- HELPERS ---------- */
+const $ = sel => document.querySelector(sel);
+const $$ = sel => document.querySelectorAll(sel);
+const fmt = n => (n==null||isNaN(n)) ? "—" : (Math.abs(n) >= 1000 ? n.toLocaleString("en-US",{maximumFractionDigits:0}) : n.toFixed(2));
+const fmtPct = n => (n==null||isNaN(n)) ? "—" : (n>=0?"+":"") + n.toFixed(2) + "%";
+const fmtVol = n => {
+  if (n==null||isNaN(n)) return "—";
+  if (n >= 1e9) return (n/1e9).toFixed(2)+"B";
+  if (n >= 1e6) return (n/1e6).toFixed(2)+"M";
+  if (n >= 1e3) return (n/1e3).toFixed(1)+"K";
+  return String(Math.round(n));
+};
+
+function toast(msg, kind="ok") {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.className = "show " + kind;
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>{ t.className = ""; }, 2400);
+}
+
+function randStr(n=6) {
+  const chars = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  let s = "";
+  for (let i=0; i<n; i++) s += chars[Math.floor(Math.random()*chars.length)];
+  return s;
+}
+
+/* ---------- MARKET HOURS (US Eastern) ---------- */
+function isMarketOpen() {
+  const now = new Date();
+  const et = new Date(now.toLocaleString("en-US",{timeZone:"America/New_York"}));
+  const day = et.getDay();
+  if (day === 0 || day === 6) return false;
+  const m = et.getHours()*60 + et.getMinutes();
+  return m >= 570 && m < 960;        // 9:30 AM - 4:00 PM ET
+}
+function nextMarketOpenLabel() {
+  const now = new Date();
+  const et = new Date(now.toLocaleString("en-US",{timeZone:"America/New_York"}));
+  const day = et.getDay();
+  const m = et.getHours()*60 + et.getMinutes();
+  if (day >= 1 && day <= 5 && m < 570) return "يفتح اليوم 9:30 ET";
+  if (day === 5 && m >= 960) return "يفتح الإثنين 9:30 ET";
+  if (day === 6) return "يفتح الإثنين 9:30 ET";
+  if (day === 0) return "يفتح الإثنين 9:30 ET";
+  return "السوق مغلق";
+}
+
+/* ---------- DATA FETCH (Yahoo via CORS proxies) ---------- */
+async function tryProxies(target) {
+  let lastErr;
+  for (const buildProxy of PROXIES) {
+    try {
+      const r = await fetch(buildProxy(target), { cache:"no-store" });
+      if (!r.ok) throw new Error("HTTP "+r.status);
+      return await r.json();
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr || new Error("all proxies failed");
+}
+
+async function fetchChart(symbol, range="1d", interval="5m") {
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=${range}&interval=${interval}`;
+  const j = await tryProxies(url);
+  const r = j?.chart?.result?.[0];
+  if (!r) throw new Error("no data for "+symbol);
+  const meta = r.meta || {};
+  const ts = r.timestamp || [];
+  const q = r.indicators?.quote?.[0] || {};
+  const closes = (q.close || []).map(v => v ?? null);
+  const highs = (q.high || []).map(v => v ?? null);
+  const lows  = (q.low  || []).map(v => v ?? null);
+  const vols  = (q.volume || []).map(v => v ?? null);
+
+  const valid = closes.filter(v => v != null);
+  const last = valid[valid.length-1] ?? meta.regularMarketPrice;
+  const prev = meta.chartPreviousClose ?? meta.previousClose ?? valid[0];
+  const change = last - prev;
+  const changePct = prev ? (change / prev) * 100 : 0;
+
+  return {
+    symbol,
+    name: NAMES[symbol] || symbol,
+    price: last,
+    prev,
+    change,
+    changePct,
+    high: meta.regularMarketDayHigh ?? Math.max(...highs.filter(v=>v!=null)),
+    low:  meta.regularMarketDayLow  ?? Math.min(...lows.filter(v=>v!=null)),
+    vol: meta.regularMarketVolume ?? vols.reduce((a,b)=>a+(b||0),0),
+    history: { ts, closes, highs, lows, vols },
+  };
+}
+
+async function fetchAll(symbols) {
+  const results = await Promise.allSettled(symbols.map(s => fetchChart(s)));
+  const out = {};
+  results.forEach((r, i) => {
+    if (r.status === "fulfilled") out[symbols[i]] = r.value;
+  });
+  return out;
+}
+
+/* ---------- INDICATORS ---------- */
+function ema(arr, period) {
+  const k = 2/(period+1);
+  let e = arr[0];
+  const out = [e];
+  for (let i=1; i<arr.length; i++) {
+    e = arr[i]*k + e*(1-k);
+    out.push(e);
+  }
+  return out;
+}
+function rsi(closes, period=14) {
+  if (closes.length < period+1) return 50;
+  let gains = 0, losses = 0;
+  for (let i=1; i<=period; i++) {
+    const d = closes[i] - closes[i-1];
+    if (d > 0) gains += d; else losses -= d;
+  }
+  let avgG = gains/period, avgL = losses/period;
+  for (let i=period+1; i<closes.length; i++) {
+    const d = closes[i] - closes[i-1];
+    const g = d > 0 ? d : 0, l = d < 0 ? -d : 0;
+    avgG = (avgG*(period-1) + g)/period;
+    avgL = (avgL*(period-1) + l)/period;
+  }
+  if (avgL === 0) return 100;
+  const rs = avgG/avgL;
+  return 100 - 100/(1+rs);
+}
+function vwap(closes, vols) {
+  let pv = 0, v = 0;
+  for (let i=0; i<closes.length; i++) {
+    if (closes[i]==null || vols[i]==null) continue;
+    pv += closes[i]*vols[i]; v += vols[i];
+  }
+  return v ? pv/v : null;
+}
+function atr(highs, lows, closes, period=14) {
+  if (closes.length < period+1) return 0;
+  const trs = [];
+  for (let i=1; i<closes.length; i++) {
+    if ([highs[i],lows[i],closes[i-1]].some(v=>v==null)) continue;
+    trs.push(Math.max(
+      highs[i]-lows[i],
+      Math.abs(highs[i]-closes[i-1]),
+      Math.abs(lows[i]-closes[i-1])
+    ));
+  }
+  if (!trs.length) return 0;
+  const slice = trs.slice(-period);
+  return slice.reduce((a,b)=>a+b,0)/slice.length;
+}
+
+/* ---------- SIGNAL ENGINE ---------- */
+function analyzeSymbol(q) {
+  const h = q.history;
+  const closes = (h.closes || []).filter(v=>v!=null);
+  if (closes.length < 30) return null;
+
+  const highs = (h.highs || []).filter(v=>v!=null);
+  const lows  = (h.lows  || []).filter(v=>v!=null);
+  const vols  = (h.vols  || []).filter(v=>v!=null);
+
+  const px = closes[closes.length-1];
+  const e9  = ema(closes, 9);
+  const e21 = ema(closes, 21);
+  const ee9  = e9[e9.length-1];
+  const ee21 = e21[e21.length-1];
+  const r = rsi(closes, 14);
+  const vw = vwap(closes, vols) ?? px;
+  const a = atr(highs, lows, closes, 14);
+  const avgVol = vols.slice(-20).reduce((a,b)=>a+b,0) / Math.max(1, Math.min(20, vols.length));
+  const lastVol = vols[vols.length-1] || 0;
+  const relVol = avgVol ? lastVol/avgVol : 1;
+
+  // Score
+  let bullScore = 0, bearScore = 0;
+  const tags = [];
+
+  if (ee9 > ee21) { bullScore += 2; tags.push("EMA صاعد"); } else { bearScore += 2; tags.push("EMA هابط"); }
+  if (px > vw) { bullScore += 1; tags.push("فوق VWAP"); } else { bearScore += 1; tags.push("تحت VWAP"); }
+  if (r > 55 && r < 75) { bullScore += 2; tags.push(`RSI قوي ${r.toFixed(0)}`); }
+  else if (r < 45 && r > 25) { bearScore += 2; tags.push(`RSI ضعيف ${r.toFixed(0)}`); }
+  else if (r >= 75) { bearScore += 1; tags.push(`RSI تشبع ${r.toFixed(0)}`); }
+  else if (r <= 25) { bullScore += 1; tags.push(`RSI ذروة بيع ${r.toFixed(0)}`); }
+  if (relVol > 1.5) { (bullScore>bearScore?bullScore:bearScore) === bullScore ? bullScore+=1 : bearScore+=1; tags.push(`حجم x${relVol.toFixed(1)}`); }
+
+  const direction = bullScore > bearScore ? "CALL" : (bearScore > bullScore ? "PUT" : null);
+  if (!direction) return null;
+
+  const score = Math.max(bullScore, bearScore);
+  const total = bullScore + bearScore;
+  const confidence = Math.min(95, Math.round((score/Math.max(1,total))*100));
+
+  if (confidence < 60) return null;
+
+  // Synthetic option suggestion
+  const isCall = direction === "CALL";
+  const strikeOffset = Math.max(1, Math.round(px * 0.005)); // ~0.5% OTM
+  const strike = isCall ? Math.ceil(px + strikeOffset) : Math.floor(px - strikeOffset);
+  // weekly expiry: next Friday
+  const today = new Date();
+  const d = today.getDay();
+  const daysToFri = ((5 - d) + 7) % 7 || 7;
+  const exp = new Date(today.getTime() + daysToFri*86400000);
+  const expStr = exp.toISOString().slice(5,10).replace("-","/");
+
+  // very rough premium estimate (intrinsic + ~ATR*0.4)
+  const intrinsic = isCall ? Math.max(0, px - strike) : Math.max(0, strike - px);
+  const cost = +(intrinsic + (a*0.45) + (px*0.005)).toFixed(2);
+
+  const target = +(cost * 1.50).toFixed(2);
+  const stop   = +(cost * 0.65).toFixed(2);
+
+  return {
+    symbol: q.symbol, name: q.name,
+    direction, price: +px.toFixed(2),
+    strike, expiry: expStr,
+    cost, target, stop,
+    confidence, score,
+    rsi: +r.toFixed(0), relVol: +relVol.toFixed(2),
+    atr: +a.toFixed(2), tags,
+  };
+}
+
+function computeBias() {
+  const spy = state.quotes.SPY, qqq = state.quotes.QQQ;
+  if (!spy || !qqq) return null;
+  let s = 0;
+  if (spy.changePct > 0.1) s += 1; if (spy.changePct < -0.1) s -= 1;
+  if (qqq.changePct > 0.2) s += 1; if (qqq.changePct < -0.2) s -= 1;
+  // breadth
+  const all = Object.values(state.quotes);
+  const ups = all.filter(q=>q.changePct>0).length;
+  const downs = all.filter(q=>q.changePct<0).length;
+  if (ups > downs * 1.5) s += 1; if (downs > ups * 1.5) s -= 1;
+  let dir = "NEUTRAL", conf = 50;
+  if (s >= 2) { dir = "BULLISH"; conf = Math.min(90, 50 + s*15); }
+  else if (s <= -2) { dir = "BEARISH"; conf = Math.min(90, 50 + Math.abs(s)*15); }
+  return { direction: dir, confidence: conf, score: s };
+}
+
+/* ---------- AUTH ---------- */
+function loadUsers() { state.users = LS.get("users", []); }
+function saveUsers() { LS.set("users", state.users); }
+
+function attemptLogin(u, p) {
+  if (u === ADMIN.username && p === ADMIN.password) {
+    state.user = { username: u, isAdmin: true };
+    LS.set("session", state.user);
+    return true;
+  }
+  loadUsers();
+  const found = state.users.find(x => x.u === u && x.p === p);
+  if (found) {
+    state.user = { username: u, isAdmin: false };
+    LS.set("session", state.user);
+    return true;
+  }
+  return false;
+}
+
+function logout() {
+  state.user = null;
+  LS.del("session");
+  if (state.refreshTimer) { clearInterval(state.refreshTimer); state.refreshTimer = null; }
+  $("#app").classList.add("hidden");
+  $("#login").classList.remove("hidden");
+  $("#lu").value = ""; $("#lp").value = "";
+}
+
+function restoreSession() {
+  const s = LS.get("session", null);
+  if (s) {
+    state.user = s;
+    showApp();
+  }
+}
+
+/* ---------- APP SHELL ---------- */
+function showApp() {
+  $("#login").classList.add("hidden");
+  $("#app").classList.remove("hidden");
+  $("#userChip").textContent = "👤 " + state.user.username + (state.user.isAdmin ? " (مدير)" : "");
+  $$(".admin-only").forEach(el => el.classList.toggle("hidden", !state.user.isAdmin));
+  state.favorites = LS.get("favs", ["AAPL","NVDA","TSLA"]);
+  loadUsers();
+  setTab("market");
+  refreshAll(true);
+  if (state.refreshTimer) clearInterval(state.refreshTimer);
+  state.refreshTimer = setInterval(() => refreshAll(false), REFRESH_MS);
+}
+
+function setTab(t) {
+  state.tab = t;
+  $$(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === t));
+  render();
+}
+
+/* ---------- REFRESH ---------- */
+async function refreshAll(initial=false) {
+  if (state.fetching) return;
+  state.marketOpen = isMarketOpen();
+  updateMarketChip();
+  if (!state.marketOpen && !initial) return;     // skip auto-refresh while closed
+  state.fetching = true;
+  try {
+    const symbols = Array.from(new Set([...TICKERS, ...INDICES, ...state.favorites]));
+    const data = await fetchAll(symbols);
+    Object.assign(state.quotes, data);
+    state.signals = TICKERS
+      .map(s => state.quotes[s] && analyzeSymbol(state.quotes[s]))
+      .filter(Boolean)
+      .sort((a,b) => b.confidence - a.confidence);
+    state.bias = computeBias();
+    state.lastUpdate = Date.now();
+    render();
+  } catch (e) {
+    console.error(e);
+    toast("تعذر تحميل البيانات. حاول لاحقاً", "err");
+  } finally {
+    state.fetching = false;
+  }
+}
+
+function updateMarketChip() {
+  const c = $("#marketChip");
+  if (state.marketOpen) {
+    c.className = "market-chip open";
+    c.innerHTML = '<span class="brand-dot" style="background:var(--green);box-shadow:0 0 10px var(--green)"></span>السوق مفتوح';
+  } else {
+    c.className = "market-chip closed";
+    c.textContent = "🔒 " + nextMarketOpenLabel();
+  }
+}
+
+/* ---------- RENDER ---------- */
+function render() {
+  const c = $("#content");
+  if (!Object.keys(state.quotes).length && state.fetching) {
+    c.innerHTML = `<div class="spinner"></div><p style="text-align:center;color:var(--muted)">جاري تحميل البيانات المباشرة...</p>`;
+    return;
+  }
+  if (state.tab === "market")  c.innerHTML = renderMarket();
+  if (state.tab === "favs")    c.innerHTML = renderFavs();
+  if (state.tab === "signals") c.innerHTML = renderSignals();
+  if (state.tab === "admin")   c.innerHTML = renderAdmin();
+  attachHandlers();
+}
+
+function chgClass(v) { return v > 0 ? "up" : (v < 0 ? "down" : "neutral"); }
+function chgArrow(v) { return v > 0 ? "▲" : (v < 0 ? "▼" : "■"); }
+
+function renderMarket() {
+  const indices = INDICES.map(s => state.quotes[s]).filter(Boolean);
+  const stocks = TICKERS.map(s => state.quotes[s]).filter(Boolean);
+
+  return `
+    <h2 class="section">📈 المؤشرات الرئيسية</h2>
+    <div class="indices-grid">
+      ${indices.map(q => `
+        <div class="index-card">
+          <div class="sym">${q.symbol}</div>
+          <div class="px">$${fmt(q.price)}</div>
+          <div class="ch ${chgClass(q.changePct)}">${chgArrow(q.changePct)} ${fmtPct(q.changePct)}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">${q.name}</div>
+        </div>
+      `).join("")}
+    </div>
+
+    <h2 class="section">💼 الأسهم النشطة (${stocks.length})</h2>
+    <div class="stocks-grid">
+      ${stocks.map(q => `
+        <div class="stock-card" data-add="${q.symbol}">
+          <div class="sym">${q.symbol}</div>
+          <div class="name">${q.name}</div>
+          <div class="px">$${fmt(q.price)}</div>
+          <div class="ch ${chgClass(q.changePct)}">${chgArrow(q.changePct)} ${fmtPct(q.changePct)}</div>
+          <div class="meta"><span>H ${fmt(q.high)}</span><span>L ${fmt(q.low)}</span></div>
+          <div class="meta" style="border:none;padding-top:2px"><span>Vol</span><span>${fmtVol(q.vol)}</span></div>
+        </div>
+      `).join("")}
+    </div>
+    <div class="disclaimer">
+      البيانات من Yahoo Finance بتأخير ~15 دقيقة • للأغراض التعليمية فقط • خاطر بحد أقصى 2% من رأس مالك
+    </div>
+  `;
+}
+
+function renderFavs() {
+  const favs = state.favorites.map(s => state.quotes[s]).filter(Boolean);
+  return `
+    <h2 class="section">⭐ الأسهم المفضلة</h2>
+    <div class="fav-bar">
+      <input id="favInput" type="text" placeholder="رمز السهم (مثال: AAPL)" maxlength="6" />
+      <button id="favAddBtn">إضافة</button>
+    </div>
+    ${favs.length === 0 ? `
+      <div class="empty">
+        <div class="em">⭐</div>
+        <div class="t">ما عندك أسهم مفضلة بعد</div>
+        <div class="s">أضف رمز سهم من الأعلى لمتابعته بشكل مباشر</div>
+      </div>` : favs.map(q => `
+      <div class="fav-detail">
+        <div class="fav-head">
+          <div class="left">
+            <div>
+              <div class="sym">${q.symbol}</div>
+              <div class="name">${q.name}</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="text-align:left">
+              <div class="px">$${fmt(q.price)}</div>
+              <div class="ch ${chgClass(q.changePct)}" style="font-size:13px;font-weight:700">
+                ${chgArrow(q.changePct)} ${fmtPct(q.changePct)} (${q.change>=0?"+":""}$${fmt(Math.abs(q.change))})
+              </div>
+            </div>
+            <button class="btn-del" data-del="${q.symbol}">حذف</button>
+          </div>
+        </div>
+        <div class="fav-stats">
+          <div class="stat"><div class="lbl">أعلى</div><div class="val">$${fmt(q.high)}</div></div>
+          <div class="stat"><div class="lbl">أدنى</div><div class="val">$${fmt(q.low)}</div></div>
+          <div class="stat"><div class="lbl">إغلاق سابق</div><div class="val">$${fmt(q.prev)}</div></div>
+          <div class="stat"><div class="lbl">الحجم</div><div class="val">${fmtVol(q.vol)}</div></div>
+        </div>
+      </div>
+    `).join("")}
+  `;
+}
+
+function renderSignals() {
+  const last = state.lastUpdate ? new Date(state.lastUpdate).toLocaleTimeString("ar-SA",{hour:"2-digit",minute:"2-digit",second:"2-digit"}) : "—";
+  const biasHTML = state.bias ? `
+    <div class="bias-card">
+      <div class="lbl">اتجاه السوق العام</div>
+      <div class="dir ${state.bias.direction==="BULLISH"?"up":(state.bias.direction==="BEARISH"?"down":"neutral")}">
+        ${state.bias.direction==="BULLISH"?"🟢 صاعد":(state.bias.direction==="BEARISH"?"🔴 هابط":"⚪ محايد")}
+      </div>
+      <div class="conf">قوة الإشارة: <strong>${state.bias.confidence}%</strong></div>
+    </div>` : "";
+
+  return `
+    <div class="signals-bar">
+      <div class="info">
+        <span class="scan-dot"></span>
+        <span>${state.marketOpen ? "يفحص السوق المباشر" : "السوق مغلق"} • آخر تحديث ${last}</span>
+      </div>
+      <button id="manualScan" class="refresh-btn">🔄 فحص الآن</button>
+    </div>
+    ${biasHTML}
+    ${state.signals.length === 0 ? `
+      <div class="empty">
+        <div class="em">🔍</div>
+        <div class="t">ما فيه فرص بثقة عالية حالياً</div>
+        <div class="s">${state.marketOpen ? "البرنامج يفحص كل 30 ثانية، التنبيه يطلع لما تتحقق الشروط" : "السوق مغلق، الفحص يبدأ تلقائياً مع فتح السوق"}</div>
+      </div>` :
+      state.signals.map(s => `
+      <div class="signal-card ${s.direction==="CALL"?"call":"put"}">
+        <div class="sig-head">
+          <div class="sig-title">
+            ${s.direction==="CALL"?"📈":"📉"} ${s.symbol}
+            <span style="color:${s.direction==="CALL"?"var(--green2)":"var(--red2)"}">${s.direction}</span>
+          </div>
+          <span class="sig-conf ${s.confidence>=75?"high":"med"}">ثقة ${s.confidence}%</span>
+        </div>
+        <div class="ticket" data-copy="${s.symbol} ${s.strike}${s.direction==="CALL"?"C":"P"} ${s.expiry} @ $${s.cost.toFixed(2)}">
+          📥 ${s.symbol} ${s.strike}${s.direction==="CALL"?"C":"P"} ${s.expiry} @ $${s.cost.toFixed(2)}
+          <span class="copy-hint">(انسخ)</span>
+        </div>
+        <div class="sig-stats">
+          <div class="stat"><div class="lbl">السعر</div><div class="val">$${fmt(s.price)}</div></div>
+          <div class="stat"><div class="lbl">السترايك</div><div class="val">${s.strike}</div></div>
+          <div class="stat"><div class="lbl">انتهاء</div><div class="val">${s.expiry}</div></div>
+          <div class="stat"><div class="lbl">التكلفة</div><div class="val" style="color:var(--amber)">$${fmt(s.cost)}</div></div>
+          <div class="stat"><div class="lbl">🎯 الهدف</div><div class="val up">$${fmt(s.target)}</div></div>
+          <div class="stat"><div class="lbl">🛑 الوقف</div><div class="val down">$${fmt(s.stop)}</div></div>
+        </div>
+        <div class="sig-tags">${s.tags.join(" · ")}</div>
+      </div>
+    `).join("")}
+    <div class="disclaimer">
+      ⚠️ هذي تحليلات آلية مبنية على المؤشرات الفنية، ليست نصيحة استثمارية. خاطر بحد أقصى 2% من رأس مالك.
+    </div>
+  `;
+}
+
+function renderAdmin() {
+  loadUsers();
+  return `
+    <h2 class="section">⚙️ إدارة المستخدمين</h2>
+    <div class="admin-bar">
+      <h3>المستخدمون: ${state.users.length}</h3>
+      <button id="addUserBtn" class="btn-add">+ إضافة مستخدم جديد</button>
+    </div>
+    ${state.users.length === 0 ? `
+      <div class="empty">
+        <div class="em">👥</div>
+        <div class="t">ما فيه مستخدمين</div>
+        <div class="s">اضغط "إضافة مستخدم جديد" لإنشاء حساب باسم وكلمة مرور عشوائية</div>
+      </div>` : state.users.map((u,i) => `
+      <div class="user-row">
+        <div class="user-creds">
+          <div class="u">👤 ${u.u}</div>
+          <div class="p">🔑 ${u.p}</div>
+          <div class="t">أُنشئ ${new Date(u.createdAt).toLocaleDateString("ar-SA")}</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="icon-btn" data-copy="اسم المستخدم: ${u.u}\nكلمة المرور: ${u.p}">📋 نسخ</button>
+          <button class="btn-del" data-rmuser="${i}">حذف</button>
+        </div>
+      </div>
+    `).join("")}
+    <div class="disclaimer">
+      ⚠️ المستخدمون مخزّنون في متصفحك فقط. كل مستخدم بيقدر يدخل من نفس الجهاز أو من جهاز آخر فقط بعد ما يفتح هذي الصفحة بنفسه ويسجّل دخول.
+    </div>
+  `;
+}
+
+/* ---------- EVENT HANDLERS (after each render) ---------- */
+function attachHandlers() {
+  // copy-to-clipboard tickets
+  $$("[data-copy]").forEach(el => el.addEventListener("click", () => {
+    navigator.clipboard.writeText(el.dataset.copy).then(()=>toast("تم النسخ ✓"));
+  }));
+
+  // add favorite
+  const fIn = $("#favInput"), fBtn = $("#favAddBtn");
+  if (fBtn) {
+    const add = () => {
+      const v = (fIn.value || "").trim().toUpperCase();
+      if (!v) return;
+      if (state.favorites.includes(v)) { toast("موجود مسبقاً", "err"); return; }
+      state.favorites.push(v);
+      LS.set("favs", state.favorites);
+      fIn.value = "";
+      refreshAll(true);
+      toast("تمت الإضافة ✓");
+    };
+    fBtn.addEventListener("click", add);
+    fIn.addEventListener("keydown", e => { if (e.key === "Enter") add(); });
+  }
+  // delete favorite
+  $$("[data-del]").forEach(b => b.addEventListener("click", () => {
+    state.favorites = state.favorites.filter(s => s !== b.dataset.del);
+    LS.set("favs", state.favorites);
+    render();
+    toast("تم الحذف ✓");
+  }));
+  // add stock from market grid → favorites
+  $$("[data-add]").forEach(el => el.addEventListener("dblclick", () => {
+    const s = el.dataset.add;
+    if (!state.favorites.includes(s)) {
+      state.favorites.push(s);
+      LS.set("favs", state.favorites);
+      toast(`أضيف ${s} للمفضلة ✓`);
+    }
+  }));
+  // manual scan
+  const ms = $("#manualScan");
+  if (ms) ms.addEventListener("click", () => { ms.textContent = "⏳ يفحص..."; refreshAll(true); });
+
+  // admin: add user
+  const addUser = $("#addUserBtn");
+  if (addUser) addUser.addEventListener("click", () => {
+    const u = randStr(6), p = randStr(6);
+    state.users.push({ u, p, createdAt: Date.now() });
+    saveUsers();
+    render();
+    toast(`أُنشئ مستخدم: ${u} / ${p}`);
+  });
+  // admin: delete user
+  $$("[data-rmuser]").forEach(b => b.addEventListener("click", () => {
+    const i = +b.dataset.rmuser;
+    if (confirm(`حذف المستخدم ${state.users[i].u}؟`)) {
+      state.users.splice(i, 1);
+      saveUsers();
+      render();
+      toast("تم الحذف ✓");
+    }
+  }));
+}
+
+/* ---------- WIRE-UP ---------- */
+$("#loginForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const u = $("#lu").value.trim();
+  const p = $("#lp").value;
+  const err = $("#loginErr");
+  if (attemptLogin(u, p)) {
+    err.classList.add("hidden");
+    showApp();
+  } else {
+    err.textContent = "اسم المستخدم أو كلمة المرور غير صحيحة";
+    err.classList.remove("hidden");
+  }
+});
+$("#logoutBtn").addEventListener("click", logout);
+$$(".tab").forEach(t => t.addEventListener("click", () => setTab(t.dataset.tab)));
+
+// market chip ticks every 30s regardless of fetch
+setInterval(updateMarketChip, 30000);
+
+// boot
+restoreSession();
+</script>
+</body>
+</html>
